@@ -2,7 +2,7 @@
 $employees = [
     [1, 'Shadab', 'Ansari', 24, 'RGT', 'Software Engineer', 'Developer', 20000, 2000, 200],
     [2, 'Rocky', 'Ansari', 24, 'RGT', 'Software Engineer', 'Developer', 25000, 2500, 200],
-    [2, 'Bicky', 'Ansari', 20, 'RGT', 'Software Engineer', 'Developer', 22000, 2200, 200],
+    [3, 'Bicky', 'Ansari', 20, 'RGT', 'Software Engineer', 'Developer', 22000, 2200, 200],
 ];
 
 function calculateNetSalary($salary, $pf, $tax)
