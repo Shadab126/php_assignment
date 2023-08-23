@@ -24,7 +24,7 @@ include 'conn.php';
                         <th scope="col">S.No</th>
                         <th scope="col">Name</th>
                         <th scope="col">Address</th>
-                        <th scope="col">Qaulification</th>
+                        <th scope="col">Qualification</th>
                         <th scope="col">City</th>
                         <th scope="col">State</th>
                         <th scope="col">Country</th>
@@ -33,7 +33,15 @@ include 'conn.php';
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "select * from  `std_details`";
+                    $limit = 3;
+
+                    if (isset($_GET['page'])) {
+                        $page = $_GET['page'];
+                    } else {
+                        $page = 1;
+                    }
+                    $offset = ($page - 1) * $limit;
+                    $sql = "select * from  `std_details` order by Sid desc limit {$offset}, {$limit}";
                     $result = mysqli_query($con, $sql);
                     if ($result) {
                         while ($row = mysqli_fetch_array($result)) {
@@ -44,7 +52,7 @@ include 'conn.php';
                             $city = $row['city'];
                             $state = $row['state'];
                             $country = $row['country'];
-                           
+
                             echo ' <tr>
                             <th scope="row">' . $sid . '</th>
                             <td>' . $sName . '</td>
@@ -57,16 +65,40 @@ include 'conn.php';
                             <button class="btn btn-primary"><a style="text-decoration: none;"  href="update.php?id=' . $sid . '"class="text-light">Upadate</a></button>
                             <button class="btn btn-danger"><a style="text-decoration: none;"  href="delete.php? deleteid=' . $sid . '"
                              class="text-light">Delete</a></button>
-        
                         </td>
                             </tr>';
                         }
                     }
                     ?>
-
-
                 </tbody>
             </table>
+            <?php
+            $sql1 = "select * from  `std_details`";
+            $result1 = mysqli_query($con, $sql1) or die("Query failed");
+
+            if (mysqli_num_rows($result1) > 0) {
+                $total_records = mysqli_num_rows($result1);
+                
+                $total_page = ceil($total_records / $limit);
+
+                echo '<ul class="pagination justify-content-center">';
+                if($page > 1){
+                    echo '<li class="page-item"><a class="page-link" href="dashboard.php?page='.($page - 1).'">Previous</a></li>';
+                }
+                for ($i = 1; $i <= $total_page; $i++) {
+                    if($i == $page){
+                        $active = "active";
+                    }else{
+                        $active = " ";
+                    }
+                    echo '<li class="'.$active.'"><a class="page-link" href="dashboard.php?page=' . $i . '">' . $i . '</a></li>';
+                }
+                if($total_page > $page){
+                    echo ' <li class="page-item"><a class="page-link" href="dashboard.php?page='.($page + 1).'">Next</a></li>';
+                }
+                echo '</ul>';
+            }
+            ?>
         </main>
     </section>
 </body>
